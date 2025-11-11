@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://autosar.org/schema/r4.0 autosar_4-2-2.xsd">
+    
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>Com</SHORT-NAME>
+            <ELEMENTS>
+                <BSW-MODULE-DESCRIPTION>
+                    <SHORT-NAME>Com</SHORT-NAME>
+                    <MODULE-ID>50</MODULE-ID>
+                    <PROVIDED-ENTRYS>
+                        <BSW-MODULE-ENTRY>
+                            <SHORT-NAME>ComInit</SHORT-NAME>
+                            <SERVICE-ID>0x01</SERVICE-ID>
+                            <IS-REENTRANT>false</IS-REENTRANT>
+                            <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+                            <CALL-TYPE>REGULAR</CALL-TYPE>
+                        </BSW-MODULE-ENTRY>
+                        <BSW-MODULE-ENTRY>
+                            <SHORT-NAME>ComDeInit</SHORT-NAME>
+                            <SERVICE-ID>0x02</SERVICE-ID>
+                            <IS-REENTRANT>false</IS-REENTRANT>
+                            <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+                            <CALL-TYPE>REGULAR</CALL-TYPE>
+                        </BSW-MODULE-ENTRY>
+                        <BSW-MODULE-ENTRY>
+                            <SHORT-NAME>ComIpdGroupControl</SHORT-NAME>
+                            <SERVICE-ID>0x03</SERVICE-ID>
+                            <IS-REENTRANT>false</IS-REENTRANT>
+                            <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+                            <CALL-TYPE>REGULAR</CALL-TYPE>
+                        </BSW-MODULE-ENTRY>
+                        <BSW-MODULE-ENTRY>
+                            <SHORT-NAME>ComSendSignal</SHORT-NAME>
+                            <SERVICE-ID>0x0a</SERVICE-ID>
+                            <IS-REENTRANT>true</IS-REENTRANT>
+                            <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+                            <CALL-TYPE>REGULAR</CALL-TYPE>
+                        </BSW-MODULE-ENTRY>
+                        <BSW-MODULE-ENTRY>
+                            <SHORT-NAME>ComReceiveSignal</SHORT-NAME>
+                            <SERVICE-ID>0x0b</SERVICE-ID>
+                            <IS-REENTRANT>true</IS-REENTRANT>
+                            <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+                            <CALL-TYPE>REGULAR</CALL-TYPE>
+                        </BSW-MODULE-ENTRY>
+                    </PROVIDED-ENTRYS>
+                    
+                    <INTERNAL-BEHAVIORS>
+                        <BSW-INTERNAL-BEHAVIOR>
+                            <SHORT-NAME>ComBehavior</SHORT-NAME>
+                            <EXCLUSIVE-AREAS/>
+                            <ENTITYS>
+                                <BSW-SCHEDULABLE-ENTITY>
+                                    <SHORT-NAME>ComMainFunctionRx</SHORT-NAME>
+                                    <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Com/ComMainFunctionRx</IMPLEMENTED-ENTRY-REF>
+                                </BSW-SCHEDULABLE-ENTITY>
+                                <BSW-SCHEDULABLE-ENTITY>
+                                    <SHORT-NAME>ComMainFunctionTx</SHORT-NAME>
+                                    <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Com/ComMainFunctionTx</IMPLEMENTED-ENTRY-REF>
+                                </BSW-SCHEDULABLE-ENTITY>
+                            </ENTITYS>
+                        </BSW-INTERNAL-BEHAVIOR>
+                    </INTERNAL-BEHAVIORS>
+                </BSW-MODULE-DESCRIPTION>
+                
+                <!-- COM Configuration -->
+                <COM-CONFIG>
+                    <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    <COM-CONFIGURATION-ID>0</COM-CONFIGURATION-ID>
+                    <COM-CONFIGURATION-TIME-BASE>0.005</COM-CONFIGURATION-TIME-BASE>
+                    <COM-ENABLE-MDT-FOR-CYCLIC-TRANSMISSION>false</COM-ENABLE-MDT-FOR-CYCLIC-TRANSMISSION>
+                    <COM-VERSION-INFO-API>false</COM-VERSION-INFO-API>
+                    <COM-TX-MODE-TRUE>
+                        <COM-TX-MODE-CONDITIONS>
+                            <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                        </COM-TX-MODE-CONDITIONS>
+                        <COM-TX-MODE-MODE>PERIODIC</COM-TX-MODE-MODE>
+                        <COM-TX-MODE-NUMBER-OF-REPETITIONS>0</COM-TX-MODE-NUMBER-OF-REPETITIONS>
+                        <COM-TX-MODE-REPETITION-PERIOD>0.1</COM-TX-MODE-REPETITION-PERIOD>
+                        <COM-TX-MODE-TIME-OFFSET>0.01</COM-TX-MODE-TIME-OFFSET>
+                        <COM-TX-MODE-TIME-PERIOD>0.1</COM-TX-MODE-TIME-PERIOD>
+                    </COM-TX-MODE-TRUE>
+                    
+                    <!-- I-PDU Groups -->
+                    <COM-I-PDU-GROUPS>
+                        <COM-I-PDU-GROUP>
+                            <SHORT-NAME>EngineDataGroup</SHORT-NAME>
+                            <COM-I-PDU-GROUP-ID>0</COM-I-PDU-GROUP-ID>
+                            <COM-I-PDU-DIRECTION>SEND</COM-I-PDU-DIRECTION>
+                        </COM-I-PDU-GROUP>
+                        <COM-I-PDU-GROUP>
+                            <SHORT-NAME>VehicleDataGroup</SHORT-NAME>
+                            <COM-I-PDU-GROUP-ID>1</COM-I-PDU-GROUP-ID>
+                            <COM-I-PDU-DIRECTION>RECEIVE</COM-I-PDU-DIRECTION>
+                        </COM-I-PDU-GROUP>
+                    </COM-I-PDU-GROUPS>
+                    
+                    <!-- I-PDUs -->
+                    <COM-I-PDUS>
+                        <COM-I-PDU>
+                            <SHORT-NAME>ComIPdu_EngineSpeed</SHORT-NAME>
+                            <COM-I-PDU-ID>0</COM-I-PDU-ID>
+                            <COM-I-PDU-DIRECTION>SEND</COM-I-PDU-DIRECTION>
+                            <COM-I-PDU-LENGTH>8</COM-I-PDU-LENGTH>
+                            <COM-I-PDU-TYPE>NORMAL</COM-I-PDU-TYPE>
+                            <COM-TX-I-PDU>
+                                <COM-TX-I-PDU-CONFIRMATION-TIMEOUT>0.5</COM-TX-I-PDU-CONFIRMATION-TIMEOUT>
+                                <COM-TX-I-PDU-UNUSED-AREAS-DEFAULT>0</COM-TX-I-PDU-UNUSED-AREAS-DEFAULT>
+                                <COM-TX-MODE-TRUE-REF DEST="COM-TX-MODE-TRUE">/Com/COM-TX-MODE-TRUE</COM-TX-MODE-TRUE-REF>
+                            </COM-TX-I-PDU>
+                            <COM-I-PDU-GROUP-REFS>
+                                <COM-I-PDU-GROUP-REF DEST="COM-I-PDU-GROUP">/Com/EngineDataGroup</COM-I-PDU-GROUP-REF>
+                            </COM-I-PDU-GROUP-REFS>
+                        </COM-I-PDU>
+                        <COM-I-PDU>
+                            <SHORT-NAME>ComIPdu_ThrottlePos</SHORT-NAME>
+                            <COM-I-PDU-ID>1</COM-I-PDU-ID>
+                            <COM-I-PDU-DIRECTION>RECEIVE</COM-I-PDU-DIRECTION>
+                            <COM-I-PDU-LENGTH>8</COM-I-PDU-LENGTH>
+                            <COM-I-PDU-TYPE>NORMAL</COM-I-PDU-TYPE>
+                            <COM-RX-I-PDU>
+                                <COM-RX-I-PDU-TIMEOUT-ACTION>NONE</COM-RX-I-PDU-TIMEOUT-ACTION>
+                                <COM-RX-I-PDU-TIMEOUT-TIMEOUT>1.0</COM-RX-I-PDU-TIMEOUT-TIMEOUT>
+                            </COM-RX-I-PDU>
+                            <COM-I-PDU-GROUP-REFS>
+                                <COM-I-PDU-GROUP-REF DEST="COM-I-PDU-GROUP">/Com/VehicleDataGroup</COM-I-PDU-GROUP-REF>
+                            </COM-I-PDU-GROUP-REFS>
+                        </COM-I-PDU>
+                    </COM-I-PDUS>
+                    
+                    <!-- Signals -->
+                    <COM-SIGNALS>
+                        <COM-SIGNAL>
+                            <SHORT-NAME>ComSignal_EngineSpeed</SHORT-NAME>
+                            <COM-SYSTEM-TEMPLATE-SIGNAL-REF DEST="SYSTEM-SIGNAL">/SystemSignals/EngineSpeed</COM-SYSTEM-TEMPLATE-SIGNAL-REF>
+                            <COM-SIGNAL-ENDIANNESS>MOST-SIGNIFICANT-BYTE-FIRST</COM-SIGNAL-ENDIANNESS>
+                            <COM-SIGNAL-INITIAL-VALUE>
+                                <NUMERICAL-VALUE-SPECIFICATION>
+                                    <VALUE>0</VALUE>
+                                </NUMERICAL-VALUE-SPECIFICATION>
+                            </COM-SIGNAL-INITIAL-VALUE>
+                            <COM-SIGNAL-LENGTH>16</COM-SIGNAL-LENGTH>
+                            <COM-SIGNAL-TYPE>PRIMITIVE</COM-SIGNAL-TYPE>
+                            <COM-TRANSFER-PROPERTY>PENDING</COM-TRANSFER-PROPERTY>
+                        </COM-SIGNAL>
+                        <COM-SIGNAL>
+                            <SHORT-NAME>ComSignal_ThrottlePosition</SHORT-NAME>
+                            <COM-SYSTEM-TEMPLATE-SIGNAL-REF DEST="SYSTEM-SIGNAL">/SystemSignals/ThrottlePosition</COM-SYSTEM-TEMPLATE-SIGNAL-REF>
+                            <COM-SIGNAL-ENDIANNESS>MOST-SIGNIFICANT-BYTE-FIRST</COM-SIGNAL-ENDIANNESS>
+                            <COM-SIGNAL-INITIAL-VALUE>
+                                <NUMERICAL-VALUE-SPECIFICATION>
+                                    <VALUE>0</VALUE>
+                                </NUMERICAL-VALUE-SPECIFICATION>
+                            </COM-SIGNAL-INITIAL-VALUE>
+                            <COM-SIGNAL-LENGTH>16</COM-SIGNAL-LENGTH>
+                            <COM-SIGNAL-TYPE>PRIMITIVE</COM-SIGNAL-TYPE>
+                            <COM-TRANSFER-PROPERTY>PENDING</COM-TRANSFER-PROPERTY>
+                        </COM-SIGNAL>
+                    </COM-SIGNALS>
+                    
+                    <!-- Group Signals -->
+                    <COM-GROUP-SIGNALS/>
+                    
+                    <!-- I-Signal to I-PDU Mappings -->
+                    <COM-I-SIGNAL-I-PDUS>
+                        <COM-I-SIGNAL-I-PDU>
+                            <SHORT-NAME>ComISignalIPdu_EngineSpeed</SHORT-NAME>
+                            <COM-I-PDU-REF DEST="COM-I-PDU">/Com/ComIPdu_EngineSpeed</COM-I-PDU-REF>
+                            <COM-I-SIGNAL-REF DEST="COM-SIGNAL">/Com/ComSignal_EngineSpeed</COM-I-SIGNAL-REF>
+                            <COM-PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</COM-PACKING-BYTE-ORDER>
+                            <COM-START-POSITION>0</COM-START-POSITION>
+                        </COM-I-SIGNAL-I-PDU>
+                        <COM-I-SIGNAL-I-PDU>
+                            <SHORT-NAME>ComISignalIPdu_ThrottlePos</SHORT-NAME>
+                            <COM-I-PDU-REF DEST="COM-I-PDU">/Com/ComIPdu_ThrottlePos</COM-I-PDU-REF>
+                            <COM-I-SIGNAL-REF DEST="COM-SIGNAL">/Com/ComSignal_ThrottlePosition</COM-I-SIGNAL-REF>
+                            <COM-PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</COM-PACKING-BYTE-ORDER>
+                            <COM-START-POSITION>0</COM-START-POSITION>
+                        </COM-I-SIGNAL-I-PDU>
+                    </COM-I-SIGNAL-I-PDUS>
+                </COM-CONFIG>
+            </ELEMENTS>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

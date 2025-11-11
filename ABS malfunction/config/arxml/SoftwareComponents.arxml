@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    ARXML Configuration for ABS Malfunction Detection System
+    Software Component Descriptions
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-3-0.xsd">
+  
+  <AR-PACKAGES>
+    
+    <!-- Application Software Components Package -->
+    <AR-PACKAGE>
+      <SHORT-NAME>ApplicationSoftwareComponents</SHORT-NAME>
+      
+      <!-- Speed Sensor Software Component -->
+      <ELEMENTS>
+        <APPLICATION-SW-COMPONENT-TYPE>
+          <SHORT-NAME>SpeedSensorSwc</SHORT-NAME>
+          <LONG-NAME>
+            <L-4 L="EN">Speed Sensor Software Component</L-4>
+          </LONG-NAME>
+          <DESC>
+            <L-2 L="EN">Software component for speed sensor data processing and validation</L-2>
+          </DESC>
+          
+          <!-- Ports -->
+          <PORTS>
+            
+            <!-- Sender-Receiver Ports for Speed Data Output -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>SpeedData_FL</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/SpeedDataInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>SpeedData_FR</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/SpeedDataInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>SpeedData_RL</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/SpeedDataInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>SpeedData_RR</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/SpeedDataInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <!-- Required Ports for Raw Sensor Data Input -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>RawSensorData_FL</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/RawSensorDataInterface</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>RawSensorData_FR</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/RawSensorDataInterface</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>RawSensorData_RL</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/RawSensorDataInterface</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>RawSensorData_RR</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/RawSensorDataInterface</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <!-- Client-Server Ports for Calibration Services -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>CalibrationService</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Interfaces/CalibrationServiceInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+          </PORTS>
+          
+          <!-- Internal Behavior -->
+          <INTERNAL-BEHAVIORS>
+            <SWC-INTERNAL-BEHAVIOR>
+              <SHORT-NAME>SpeedSensorSwcInternalBehavior</SHORT-NAME>
+              
+              <!-- Runnables -->
+              <RUNNABLES>
+                
+                <!-- Main Cyclic Runnable -->
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>RE_SpeedSensor_MainCyclic</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.01</MINIMUM-START-INTERVAL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>RE_SpeedSensor_MainCyclic</SYMBOL>
+                  
+                  <!-- Data Read Points -->
+                  <DATA-READ-ACCESSS>
+                    <VARIABLE-ACCESS>
+                      <SHORT-NAME>Read_RawSensorData_FL</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/ApplicationSoftwareComponents/SpeedSensorSwc/RawSensorData_FL</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/Interfaces/RawSensorDataInterface/rawData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                  </DATA-READ-ACCESSS>
+                  
+                  <!-- Data Write Points -->
+                  <DATA-WRITE-ACCESSS>
+                    <VARIABLE-ACCESS>
+                      <SHORT-NAME>Write_SpeedData_FL</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/ApplicationSoftwareComponents/SpeedSensorSwc/SpeedData_FL</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/Interfaces/SpeedDataInterface/speedData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                  </DATA-WRITE-ACCESSS>
+                  
+                </RUNNABLE-ENTITY>
+                
+                <!-- Calibration Runnable -->
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>RE_SpeedSensor_Calibration</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>RE_SpeedSensor_Calibration</SYMBOL>
+                </RUNNABLE-ENTITY>
+                
+              </RUNNABLES>
+              
+              <!-- Events -->
+              <EVENTS>
+                
+                <!-- Timing Event for Main Cyclic -->
+                <TIMING-EVENT>
+                  <SHORT-NAME>TE_SpeedSensor_MainCyclic</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ApplicationSoftwareComponents/SpeedSensorSwc/SpeedSensorSwcInternalBehavior/RE_SpeedSensor_MainCyclic</START-ON-EVENT-REF>
+                  <PERIOD>0.01</PERIOD>
+                </TIMING-EVENT>
+                
+              </EVENTS>
+              
+            </SWC-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+          
+        </APPLICATION-SW-COMPONENT-TYPE>
+        
+        <!-- ABS Malfunction Detection Software Component -->
+        <APPLICATION-SW-COMPONENT-TYPE>
+          <SHORT-NAME>ABSMalfunctionDetectionSwc</SHORT-NAME>
+          <LONG-NAME>
+            <L-4 L="EN">ABS Malfunction Detection Software Component</L-4>
+          </LONG-NAME>
+          <DESC>
+            <L-2 L="EN">Software component for detecting ABS malfunctions from miscalibrated speed sensors</L-2>
+          </DESC>
+          
+          <!-- Ports -->
+          <PORTS>
+            
+            <!-- Required Ports for Speed Data Input -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>SpeedData_FL_In</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/SpeedDataInterface</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>SpeedData_FR_In</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/SpeedDataInterface</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>SpeedData_RL_In</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/SpeedDataInterface</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>SpeedData_RR_In</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/SpeedDataInterface</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <!-- Provided Ports for Malfunction Status Output -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>MalfunctionStatus_FL</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/MalfunctionStatusInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>MalfunctionStatus_FR</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/MalfunctionStatusInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>MalfunctionStatus_RL</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/MalfunctionStatusInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>MalfunctionStatus_RR</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/MalfunctionStatusInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <!-- System State Output -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>SystemState</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/SystemStateInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+          </PORTS>
+          
+          <!-- Internal Behavior -->
+          <INTERNAL-BEHAVIORS>
+            <SWC-INTERNAL-BEHAVIOR>
+              <SHORT-NAME>ABSMalfunctionDetectionSwcInternalBehavior</SHORT-NAME>
+              
+              <!-- Runnables -->
+              <RUNNABLES>
+                
+                <!-- Main Cyclic Runnable -->
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>RE_ABS_MalfunctionDetection_MainCyclic</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.02</MINIMUM-START-INTERVAL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>RE_ABS_MalfunctionDetection_MainCyclic</SYMBOL>
+                </RUNNABLE-ENTITY>
+                
+              </RUNNABLES>
+              
+              <!-- Events -->
+              <EVENTS>
+                
+                <!-- Timing Event for Main Cyclic -->
+                <TIMING-EVENT>
+                  <SHORT-NAME>TE_ABS_MalfunctionDetection_MainCyclic</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ApplicationSoftwareComponents/ABSMalfunctionDetectionSwc/ABSMalfunctionDetectionSwcInternalBehavior/RE_ABS_MalfunctionDetection_MainCyclic</START-ON-EVENT-REF>
+                  <PERIOD>0.02</PERIOD>
+                </TIMING-EVENT>
+                
+              </EVENTS>
+              
+            </SWC-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+          
+        </APPLICATION-SW-COMPONENT-TYPE>
+        
+      </ELEMENTS>
+      
+    </AR-PACKAGE>
+    
+    <!-- Interface Definitions Package -->
+    <AR-PACKAGE>
+      <SHORT-NAME>Interfaces</SHORT-NAME>
+      
+      <ELEMENTS>
+        
+        <!-- Speed Data Interface -->
+        <SENDER-RECEIVER-INTERFACE>
+          <SHORT-NAME>SpeedDataInterface</SHORT-NAME>
+          <IS-SERVICE>false</IS-SERVICE>
+          
+          <DATA-ELEMENTS>
+            <VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>speedData</SHORT-NAME>
+              <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/SpeedData_t</TYPE-TREF>
+            </VARIABLE-DATA-PROTOTYPE>
+          </DATA-ELEMENTS>
+          
+        </SENDER-RECEIVER-INTERFACE>
+        
+        <!-- Raw Sensor Data Interface -->
+        <SENDER-RECEIVER-INTERFACE>
+          <SHORT-NAME>RawSensorDataInterface</SHORT-NAME>
+          <IS-SERVICE>false</IS-SERVICE>
+          
+          <DATA-ELEMENTS>
+            <VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>rawData</SHORT-NAME>
+              <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/SpeedSensorRawData_t</TYPE-TREF>
+            </VARIABLE-DATA-PROTOTYPE>
+          </DATA-ELEMENTS>
+          
+        </SENDER-RECEIVER-INTERFACE>
+        
+        <!-- Malfunction Status Interface -->
+        <SENDER-RECEIVER-INTERFACE>
+          <SHORT-NAME>MalfunctionStatusInterface</SHORT-NAME>
+          <IS-SERVICE>false</IS-SERVICE>
+          
+          <DATA-ELEMENTS>
+            <VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>status</SHORT-NAME>
+              <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/ABS_MalfunctionStatus_t</TYPE-TREF>
+            </VARIABLE-DATA-PROTOTYPE>
+          </DATA-ELEMENTS>
+          
+        </SENDER-RECEIVER-INTERFACE>
+        
+        <!-- System State Interface -->
+        <SENDER-RECEIVER-INTERFACE>
+          <SHORT-NAME>SystemStateInterface</SHORT-NAME>
+          <IS-SERVICE>false</IS-SERVICE>
+          
+          <DATA-ELEMENTS>
+            <VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>state</SHORT-NAME>
+              <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/ABS_SystemState_t</TYPE-TREF>
+            </VARIABLE-DATA-PROTOTYPE>
+          </DATA-ELEMENTS>
+          
+        </SENDER-RECEIVER-INTERFACE>
+        
+        <!-- Calibration Service Interface -->
+        <CLIENT-SERVER-INTERFACE>
+          <SHORT-NAME>CalibrationServiceInterface</SHORT-NAME>
+          <IS-SERVICE>false</IS-SERVICE>
+          
+          <OPERATIONS>
+            
+            <CLIENT-SERVER-OPERATION>
+              <SHORT-NAME>SetCalibration</SHORT-NAME>
+              <ARGUMENTS>
+                <ARGUMENT-DATA-PROTOTYPE>
+                  <SHORT-NAME>wheelPos</SHORT-NAME>
+                  <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/WheelPosition_t</TYPE-TREF>
+                  <DIRECTION>IN</DIRECTION>
+                </ARGUMENT-DATA-PROTOTYPE>
+                <ARGUMENT-DATA-PROTOTYPE>
+                  <SHORT-NAME>calibration</SHORT-NAME>
+                  <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/SpeedSensorCalibration_t</TYPE-TREF>
+                  <DIRECTION>IN</DIRECTION>
+                </ARGUMENT-DATA-PROTOTYPE>
+              </ARGUMENTS>
+              <POSSIBLE-ERROR-REFS>
+                <POSSIBLE-ERROR-REF DEST="APPLICATION-ERROR">/Interfaces/CalibrationServiceInterface/E_NOT_OK</POSSIBLE-ERROR-REF>
+              </POSSIBLE-ERROR-REFS>
+            </CLIENT-SERVER-OPERATION>
+            
+            <CLIENT-SERVER-OPERATION>
+              <SHORT-NAME>GetCalibration</SHORT-NAME>
+              <ARGUMENTS>
+                <ARGUMENT-DATA-PROTOTYPE>
+                  <SHORT-NAME>wheelPos</SHORT-NAME>
+                  <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/WheelPosition_t</TYPE-TREF>
+                  <DIRECTION>IN</DIRECTION>
+                </ARGUMENT-DATA-PROTOTYPE>
+                <ARGUMENT-DATA-PROTOTYPE>
+                  <SHORT-NAME>calibration</SHORT-NAME>
+                  <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/SpeedSensorCalibration_t</TYPE-TREF>
+                  <DIRECTION>OUT</DIRECTION>
+                </ARGUMENT-DATA-PROTOTYPE>
+              </ARGUMENTS>
+              <POSSIBLE-ERROR-REFS>
+                <POSSIBLE-ERROR-REF DEST="APPLICATION-ERROR">/Interfaces/CalibrationServiceInterface/E_NOT_OK</POSSIBLE-ERROR-REF>
+              </POSSIBLE-ERROR-REFS>
+            </CLIENT-SERVER-OPERATION>
+            
+          </OPERATIONS>
+          
+          <POSSIBLE-ERRORS>
+            <APPLICATION-ERROR>
+              <SHORT-NAME>E_NOT_OK</SHORT-NAME>
+              <ERROR-CODE>1</ERROR-CODE>
+            </APPLICATION-ERROR>
+          </POSSIBLE-ERRORS>
+          
+        </CLIENT-SERVER-INTERFACE>
+        
+      </ELEMENTS>
+      
+    </AR-PACKAGE>
+    
+    <!-- Data Types Package -->
+    <AR-PACKAGE>
+      <SHORT-NAME>DataTypes</SHORT-NAME>
+      
+      <ELEMENTS>
+        
+        <!-- Basic Data Types -->
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>uint8</SHORT-NAME>
+          <CATEGORY>PRIMITIVE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                <SW-IMPL-POLICY>STANDARD</SW-IMPL-POLICY>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </IMPLEMENTATION-DATA-TYPE>
+        
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>uint16</SHORT-NAME>
+          <CATEGORY>PRIMITIVE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                <SW-IMPL-POLICY>STANDARD</SW-IMPL-POLICY>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </IMPLEMENTATION-DATA-TYPE>
+        
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>uint32</SHORT-NAME>
+          <CATEGORY>PRIMITIVE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                <SW-IMPL-POLICY>STANDARD</SW-IMPL-POLICY>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </IMPLEMENTATION-DATA-TYPE>
+        
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>float32</SHORT-NAME>
+          <CATEGORY>PRIMITIVE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <BASE-TYPE-ENCODING>IEEE754</BASE-TYPE-ENCODING>
+                <SW-IMPL-POLICY>STANDARD</SW-IMPL-POLICY>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </IMPLEMENTATION-DATA-TYPE>
+        
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>boolean</SHORT-NAME>
+          <CATEGORY>PRIMITIVE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                <SW-IMPL-POLICY>STANDARD</SW-IMPL-POLICY>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </IMPLEMENTATION-DATA-TYPE>
+        
+        <!-- Enumeration Types -->
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>WheelPosition_t</SHORT-NAME>
+          <CATEGORY>TYPE_REFERENCE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                <SW-IMPL-POLICY>STANDARD</SW-IMPL-POLICY>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </IMPLEMENTATION-DATA-TYPE>
+        
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>ABS_SystemState_t</SHORT-NAME>
+          <CATEGORY>TYPE_REFERENCE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                <SW-IMPL-POLICY>STANDARD</SW-IMPL-POLICY>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </IMPLEMENTATION-DATA-TYPE>
+        
+        <!-- Complex Data Types -->
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>SpeedData_t</SHORT-NAME>
+          <CATEGORY>STRUCTURE</CATEGORY>
+          <SUB-ELEMENTS>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>wheelSpeed</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/float32</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>wheelSpeedRaw</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/float32</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>accelerationX</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/float32</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>speedValid</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/boolean</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>qualityFactor</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/uint8</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+          </SUB-ELEMENTS>
+        </IMPLEMENTATION-DATA-TYPE>
+        
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>SpeedSensorRawData_t</SHORT-NAME>
+          <CATEGORY>STRUCTURE</CATEGORY>
+          <SUB-ELEMENTS>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>pulseCount</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/uint16</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>timeInterval</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/uint16</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>dataValid</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/boolean</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+          </SUB-ELEMENTS>
+        </IMPLEMENTATION-DATA-TYPE>
+        
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>SpeedSensorCalibration_t</SHORT-NAME>
+          <CATEGORY>STRUCTURE</CATEGORY>
+          <SUB-ELEMENTS>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>correctionFactor</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/float32</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>offsetValue</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/float32</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>calibrationValid</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/boolean</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+          </SUB-ELEMENTS>
+        </IMPLEMENTATION-DATA-TYPE>
+        
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>ABS_MalfunctionStatus_t</SHORT-NAME>
+          <CATEGORY>STRUCTURE</CATEGORY>
+          <SUB-ELEMENTS>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>isActive</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/boolean</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>affectedWheel</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/WheelPosition_t</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+            <IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              <SHORT-NAME>deviationValue</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/float32</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE-ELEMENT>
+          </SUB-ELEMENTS>
+        </IMPLEMENTATION-DATA-TYPE>
+        
+      </ELEMENTS>
+      
+    </AR-PACKAGE>
+    
+  </AR-PACKAGES>
+  
+</AUTOSAR>

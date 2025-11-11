@@ -1,0 +1,332 @@
+/**
+ * @file EcuConfig.xml
+ * @brief AUTOSAR ECU Configuration for Infotainment System
+ * @details Configuration for power management, communication, and basic software
+ * @author Battery Drain Case Study
+ * @date November 2024
+ */
+
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-3-0.xsd">
+  
+  <AR-PACKAGES>
+    <!-- ECU Instance Configuration -->
+    <AR-PACKAGE>
+      <SHORT-NAME>EcuInstance</SHORT-NAME>
+      <ELEMENTS>
+        <ECU-INSTANCE>
+          <SHORT-NAME>InfotainmentECU</SHORT-NAME>
+          <DESC>
+            <L-2 L="EN">AUTOSAR Infotainment ECU with Power Management</L-2>
+          </DESC>
+          
+          <!-- ECU Properties -->
+          <ECU-WAKEUP-SOURCE-REFS>
+            <ECU-WAKEUP-SOURCE-REF DEST="ECU-WAKEUP-SOURCE">/EcuWakeupSources/IgnitionWakeup</ECU-WAKEUP-SOURCE-REF>
+            <ECU-WAKEUP-SOURCE-REF DEST="ECU-WAKEUP-SOURCE">/EcuWakeupSources/CanNetworkWakeup</ECU-WAKEUP-SOURCE-REF>
+            <ECU-WAKEUP-SOURCE-REF DEST="ECU-WAKEUP-SOURCE">/EcuWakeupSources/UserInputWakeup</ECU-WAKEUP-SOURCE-REF>
+            <ECU-WAKEUP-SOURCE-REF DEST="ECU-WAKEUP-SOURCE">/EcuWakeupSources/TimerWakeup</ECU-WAKEUP-SOURCE-REF>
+          </ECU-WAKEUP-SOURCE-REFS>
+          
+          <!-- Power States -->
+          <POWER-STATE-IREF>
+            <CONTEXT-PORT-REF DEST="R-PORT-PROTOTYPE">/EcuInstance/InfotainmentECU/PowerManager</CONTEXT-PORT-REF>
+            <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/PowerManagement/PowerStateInterface/PowerState</TARGET-DATA-PROTOTYPE-REF>
+          </POWER-STATE-IREF>
+          
+          <!-- Sleep Mode Configuration -->
+          <SLEEP-MODE-SUPPORTED>true</SLEEP-MODE-SUPPORTED>
+          <SLEEP-MODE-EXECUTION-DELAY>5.0</SLEEP-MODE-EXECUTION-DELAY> <!-- 5 seconds -->
+          <WAKEUP-OVER-BUS-SUPPORTED>true</WAKEUP-OVER-BUS-SUPPORTED>
+          
+        </ECU-INSTANCE>
+      </ELEMENTS>
+    </AR-PACKAGE>
+    
+    <!-- Wake-up Sources Configuration -->
+    <AR-PACKAGE>
+      <SHORT-NAME>EcuWakeupSources</SHORT-NAME>
+      <ELEMENTS>
+        
+        <ECU-WAKEUP-SOURCE>
+          <SHORT-NAME>IgnitionWakeup</SHORT-NAME>
+          <WAKEUP-SOURCE-POLLING>false</WAKEUP-SOURCE-POLLING>
+          <WAKEUP-SOURCE-TYPE>WAKEUP-OVER-BUS</WAKEUP-SOURCE-TYPE>
+        </ECU-WAKEUP-SOURCE>
+        
+        <ECU-WAKEUP-SOURCE>
+          <SHORT-NAME>CanNetworkWakeup</SHORT-NAME>
+          <WAKEUP-SOURCE-POLLING>false</WAKEUP-SOURCE-POLLING>
+          <WAKEUP-SOURCE-TYPE>WAKEUP-OVER-BUS</WAKEUP-SOURCE-TYPE>
+        </ECU-WAKEUP-SOURCE>
+        
+        <ECU-WAKEUP-SOURCE>
+          <SHORT-NAME>UserInputWakeup</SHORT-NAME>
+          <WAKEUP-SOURCE-POLLING>true</WAKEUP-SOURCE-POLLING>
+          <WAKEUP-SOURCE-TYPE>WAKEUP-OVER-BUS</WAKEUP-SOURCE-TYPE>
+        </ECU-WAKEUP-SOURCE>
+        
+        <ECU-WAKEUP-SOURCE>
+          <SHORT-NAME>TimerWakeup</SHORT-NAME>
+          <WAKEUP-SOURCE-POLLING>false</WAKEUP-SOURCE-POLLING>
+          <WAKEUP-SOURCE-TYPE>WAKEUP-OVER-BUS</WAKEUP-SOURCE-TYPE>
+        </ECU-WAKEUP-SOURCE>
+        
+      </ELEMENTS>
+    </AR-PACKAGE>
+    
+    <!-- Basic Software Configuration -->
+    <AR-PACKAGE>
+      <SHORT-NAME>BswModules</SHORT-NAME>
+      <ELEMENTS>
+        
+        <!-- Operating System Configuration -->
+        <BSW-MODULE-DESCRIPTION>
+          <SHORT-NAME>Os</SHORT-NAME>
+          <CATEGORY>OS</CATEGORY>
+          <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/BswModules/Os/OsMain</BSW-MODULE-ENTRY-REF>
+          
+          <!-- OS Tasks -->
+          <PROVIDED-ENTRYS>
+            <BSW-MODULE-ENTRY>
+              <SHORT-NAME>PowerManagerTask</SHORT-NAME>
+              <CALL-TYPE>SCHEDULED</CALL-TYPE>
+              <EXECUTION-PERIOD>0.1</EXECUTION-PERIOD> <!-- 100ms -->
+            </BSW-MODULE-ENTRY>
+            
+            <BSW-MODULE-ENTRY>
+              <SHORT-NAME>InfotainmentTask</SHORT-NAME>
+              <CALL-TYPE>SCHEDULED</CALL-TYPE>
+              <EXECUTION-PERIOD>0.05</EXECUTION-PERIOD> <!-- 50ms -->
+            </BSW-MODULE-ENTRY>
+            
+            <BSW-MODULE-ENTRY>
+              <SHORT-NAME>MonitoringTask</SHORT-NAME>
+              <CALL-TYPE>SCHEDULED</CALL-TYPE>
+              <EXECUTION-PERIOD>1.0</EXECUTION-PERIOD> <!-- 1000ms -->
+            </BSW-MODULE-ENTRY>
+          </PROVIDED-ENTRYS>
+        </BSW-MODULE-DESCRIPTION>
+        
+        <!-- Power Management Configuration -->
+        <BSW-MODULE-DESCRIPTION>
+          <SHORT-NAME>BswM</SHORT-NAME>
+          <CATEGORY>BSWM</CATEGORY>
+          
+          <!-- Power Mode Rules -->
+          <BSW-MODULE-ENTRYS>
+            <BSW-MODULE-ENTRY>
+              <SHORT-NAME>PowerModeRule_Sleep</SHORT-NAME>
+              <CALL-TYPE>CALLBACK</CALL-TYPE>
+            </BSW-MODULE-ENTRY>
+            
+            <BSW-MODULE-ENTRY>
+              <SHORT-NAME>PowerModeRule_Wakeup</SHORT-NAME>
+              <CALL-TYPE>CALLBACK</CALL-TYPE>
+            </BSW-MODULE-ENTRY>
+          </BSW-MODULE-ENTRYS>
+        </BSW-MODULE-DESCRIPTION>
+        
+        <!-- Communication Stack -->
+        <BSW-MODULE-DESCRIPTION>
+          <SHORT-NAME>Com</SHORT-NAME>
+          <CATEGORY>COM</CATEGORY>
+          
+          <!-- Communication Signals -->
+          <PROVIDED-ENTRYS>
+            <BSW-MODULE-ENTRY>
+              <SHORT-NAME>PowerState_Signal</SHORT-NAME>
+              <CALL-TYPE>SCHEDULED</CALL-TYPE>
+            </BSW-MODULE-ENTRY>
+            
+            <BSW-MODULE-ENTRY>
+              <SHORT-NAME>DiagnosticData_Signal</SHORT-NAME>
+              <CALL-TYPE>SCHEDULED</CALL-TYPE>
+            </BSW-MODULE-ENTRY>
+          </PROVIDED-ENTRYS>
+        </BSW-MODULE-DESCRIPTION>
+        
+      </ELEMENTS>
+    </AR-PACKAGE>
+    
+    <!-- Software Component Configuration -->
+    <AR-PACKAGE>
+      <SHORT-NAME>SwComponents</SHORT-NAME>
+      <ELEMENTS>
+        
+        <!-- Power Manager Component -->
+        <APPLICATION-SW-COMPONENT-TYPE>
+          <SHORT-NAME>PowerManagerComponent</SHORT-NAME>
+          
+          <PORTS>
+            <!-- Power State Port -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>PowerStatePort</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/PowerStateInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <!-- Wake-up Event Port -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>WakeupEventPort</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Interfaces/WakeupInterface</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+          </PORTS>
+          
+          <INTERNAL-BEHAVIORS>
+            <SWC-INTERNAL-BEHAVIOR>
+              <SHORT-NAME>PowerManagerBehavior</SHORT-NAME>
+              
+              <!-- Runnable Entities -->
+              <RUNNABLES>
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>PowerManager_MainFunction</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.1</MINIMUM-START-INTERVAL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  
+                  <!-- Data Access -->
+                  <DATA-WRITE-ACCESSS>
+                    <VARIABLE-ACCESS>
+                      <SHORT-NAME>PowerStateWrite</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/SwComponents/PowerManagerComponent/PowerStatePort</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/Interfaces/PowerStateInterface/PowerState</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                  </DATA-WRITE-ACCESSS>
+                </RUNNABLE-ENTITY>
+              </RUNNABLES>
+              
+              <!-- Events -->
+              <EVENTS>
+                <TIMING-EVENT>
+                  <SHORT-NAME>PowerManager_MainFunction_Event</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/SwComponents/PowerManagerComponent/PowerManagerBehavior/PowerManager_MainFunction</START-ON-EVENT-REF>
+                  <PERIOD>0.1</PERIOD>
+                </TIMING-EVENT>
+              </EVENTS>
+            </SWC-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+        </APPLICATION-SW-COMPONENT-TYPE>
+        
+        <!-- Infotainment Component -->
+        <APPLICATION-SW-COMPONENT-TYPE>
+          <SHORT-NAME>InfotainmentComponent</SHORT-NAME>
+          
+          <PORTS>
+            <!-- Power State Port -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>PowerStatePort</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/PowerStateInterface</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <!-- Diagnostic Port -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>DiagnosticPort</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/DiagnosticInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+          </PORTS>
+          
+          <INTERNAL-BEHAVIORS>
+            <SWC-INTERNAL-BEHAVIOR>
+              <SHORT-NAME>InfotainmentBehavior</SHORT-NAME>
+              
+              <RUNNABLES>
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>Infotainment_MainFunction</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.05</MINIMUM-START-INTERVAL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                </RUNNABLE-ENTITY>
+              </RUNNABLES>
+              
+              <EVENTS>
+                <TIMING-EVENT>
+                  <SHORT-NAME>Infotainment_MainFunction_Event</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/SwComponents/InfotainmentComponent/InfotainmentBehavior/Infotainment_MainFunction</START-ON-EVENT-REF>
+                  <PERIOD>0.05</PERIOD>
+                </TIMING-EVENT>
+              </EVENTS>
+            </SWC-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+        </APPLICATION-SW-COMPONENT-TYPE>
+        
+      </ELEMENTS>
+    </AR-PACKAGE>
+    
+    <!-- Interface Definitions -->
+    <AR-PACKAGE>
+      <SHORT-NAME>Interfaces</SHORT-NAME>
+      <ELEMENTS>
+        
+        <!-- Power State Interface -->
+        <SENDER-RECEIVER-INTERFACE>
+          <SHORT-NAME>PowerStateInterface</SHORT-NAME>
+          <IS-SERVICE>false</IS-SERVICE>
+          
+          <DATA-ELEMENTS>
+            <VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>PowerState</SHORT-NAME>
+              <TYPE-TREF DEST="INTEGER-TYPE">/DataTypes/PowerState_T</TYPE-TREF>
+            </VARIABLE-DATA-PROTOTYPE>
+            
+            <VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>PowerConsumption</SHORT-NAME>
+              <TYPE-TREF DEST="INTEGER-TYPE">/DataTypes/uint32</TYPE-TREF>
+            </VARIABLE-DATA-PROTOTYPE>
+            
+            <VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>BatteryVoltage</SHORT-NAME>
+              <TYPE-TREF DEST="INTEGER-TYPE">/DataTypes/uint32</TYPE-TREF>
+            </VARIABLE-DATA-PROTOTYPE>
+          </DATA-ELEMENTS>
+        </SENDER-RECEIVER-INTERFACE>
+        
+        <!-- Wake-up Interface -->
+        <CLIENT-SERVER-INTERFACE>
+          <SHORT-NAME>WakeupInterface</SHORT-NAME>
+          <IS-SERVICE>false</IS-SERVICE>
+          
+          <OPERATIONS>
+            <CLIENT-SERVER-OPERATION>
+              <SHORT-NAME>RequestWakeup</SHORT-NAME>
+              <ARGUMENTS>
+                <ARGUMENT-DATA-PROTOTYPE>
+                  <SHORT-NAME>WakeupSource</SHORT-NAME>
+                  <TYPE-TREF DEST="INTEGER-TYPE">/DataTypes/WakeupSource_T</TYPE-TREF>
+                  <DIRECTION>IN</DIRECTION>
+                </ARGUMENT-DATA-PROTOTYPE>
+              </ARGUMENTS>
+            </CLIENT-SERVER-OPERATION>
+            
+            <CLIENT-SERVER-OPERATION>
+              <SHORT-NAME>RequestSleep</SHORT-NAME>
+            </CLIENT-SERVER-OPERATION>
+          </OPERATIONS>
+        </CLIENT-SERVER-INTERFACE>
+        
+        <!-- Diagnostic Interface -->
+        <SENDER-RECEIVER-INTERFACE>
+          <SHORT-NAME>DiagnosticInterface</SHORT-NAME>
+          <IS-SERVICE>false</IS-SERVICE>
+          
+          <DATA-ELEMENTS>
+            <VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>SystemHealth</SHORT-NAME>
+              <TYPE-TREF DEST="BOOLEAN-TYPE">/DataTypes/boolean</TYPE-TREF>
+            </VARIABLE-DATA-PROTOTYPE>
+            
+            <VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>ErrorCodes</SHORT-NAME>
+              <TYPE-TREF DEST="ARRAY-TYPE">/DataTypes/ErrorCodeArray</TYPE-TREF>
+            </VARIABLE-DATA-PROTOTYPE>
+          </DATA-ELEMENTS>
+        </SENDER-RECEIVER-INTERFACE>
+        
+      </ELEMENTS>
+    </AR-PACKAGE>
+    
+  </AR-PACKAGES>
+</AUTOSAR>

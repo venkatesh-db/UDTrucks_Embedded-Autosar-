@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sample AUTOSAR ECU Configuration Template -->
+<!-- This template shows essential configurations for Engine ECU -->
+
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://autosar.org/schema/r4.0 autosar_4-2-2.xsd">
+    
+    <AR-PACKAGES>
+        <!-- ECU Instance Configuration -->
+        <AR-PACKAGE>
+            <SHORT-NAME>EcuInstance</SHORT-NAME>
+            <ELEMENTS>
+                <ECU-INSTANCE>
+                    <SHORT-NAME>EngineECU</SHORT-NAME>
+                    <ASSOCIATED-COM-I-PDU-GROUP-REFS/>
+                    <ASSOCIATED-I-SIGNAL-I-PDUS/>
+                    <COMM-CONTROLLERS>
+                        <CAN-COMMUNICATION-CONTROLLER>
+                            <SHORT-NAME>CanController_0</SHORT-NAME>
+                            <CAN-IF-CONFIG>
+                                <INIT-CONFIG-SET>
+                                    <CAN-CONTROLLER-CONFIGS>
+                                        <CAN-CONTROLLER-CONFIG>
+                                            <CONTROLLER-ID>0</CONTROLLER-ID>
+                                            <DEFAULT-BAUD-RATE>500000</DEFAULT-BAUD-RATE>
+                                            <MAX-BAUD-RATE>1000000</MAX-BAUD-RATE>
+                                        </CAN-CONTROLLER-CONFIG>
+                                    </CAN-CONTROLLER-CONFIGS>
+                                </INIT-CONFIG-SET>
+                            </CAN-IF-CONFIG>
+                        </CAN-COMMUNICATION-CONTROLLER>
+                    </COMM-CONTROLLERS>
+                </ECU-INSTANCE>
+            </ELEMENTS>
+        </AR-PACKAGE>
+
+        <!-- OS Configuration -->
+        <AR-PACKAGE>
+            <SHORT-NAME>Os</SHORT-NAME>
+            <ELEMENTS>
+                <OS>
+                    <SHORT-NAME>OsApplication</SHORT-NAME>
+                    <OS-TASKS>
+                        <OS-TASK>
+                            <SHORT-NAME>StartupTask</SHORT-NAME>
+                            <PRIORITY>10</PRIORITY>
+                            <SCHEDULE>FULL</SCHEDULE>
+                            <ACTIVATION>1</ACTIVATION>
+                            <AUTOSTART>true</AUTOSTART>
+                        </OS-TASK>
+                        <OS-TASK>
+                            <SHORT-NAME>MainTask</SHORT-NAME>
+                            <PRIORITY>5</PRIORITY>
+                            <SCHEDULE>FULL</SCHEDULE>
+                            <ACTIVATION>1</ACTIVATION>
+                            <AUTOSTART>false</AUTOSTART>
+                        </OS-TASK>
+                    </OS-TASKS>
+                    <OS-ALARMS>
+                        <OS-ALARM>
+                            <SHORT-NAME>MainTaskAlarm</SHORT-NAME>
+                            <COUNTER-REF DEST="OS-COUNTER">/Os/SystemTimer</COUNTER-REF>
+                            <ACTION>
+                                <ACTIVATE-TASK-REF DEST="OS-TASK">/Os/MainTask</ACTIVATE-TASK-REF>
+                            </ACTION>
+                            <AUTOSTART>
+                                <RELATIVE>
+                                    <ALARM-TIME>10</ALARM-TIME>
+                                    <CYCLE-TIME>10</CYCLE-TIME>
+                                </RELATIVE>
+                            </AUTOSTART>
+                        </OS-ALARM>
+                    </OS-ALARMS>
+                </OS>
+            </ELEMENTS>
+        </AR-PACKAGE>
+
+        <!-- RTE Configuration -->
+        <AR-PACKAGE>
+            <SHORT-NAME>Rte</SHORT-NAME>
+            <ELEMENTS>
+                <RTE-EVENT>
+                    <SHORT-NAME>StartupEvent</SHORT-NAME>
+                    <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/SwComponents/EngineControl/StartupRunnable</START-ON-EVENT-REF>
+                </RTE-EVENT>
+            </ELEMENTS>
+        </AR-PACKAGE>
+
+    </AR-PACKAGES>
+</AUTOSAR>

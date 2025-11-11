@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    ARXML Configuration for ABS Malfunction Detection System
+    System Description and Component Composition
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-3-0.xsd">
+  
+  <AR-PACKAGES>
+    
+    <!-- System Package -->
+    <AR-PACKAGE>
+      <SHORT-NAME>ABSMalfunctionDetectionSystem</SHORT-NAME>
+      
+      <ELEMENTS>
+        
+        <!-- System Description -->
+        <SYSTEM>
+          <SHORT-NAME>ABSSystem</SHORT-NAME>
+          <LONG-NAME>
+            <L-4 L="EN">ABS Malfunction Detection System</L-4>
+          </LONG-NAME>
+          <DESC>
+            <L-2 L="EN">Complete system for detecting ABS malfunctions from miscalibrated speed sensors</L-2>
+          </DESC>
+          
+          <!-- System Mappings -->
+          <MAPPINGS>
+            
+            <!-- Software to ECU Mappings -->
+            <SW-MAPPINGS>
+              
+              <!-- Speed Sensor SWC Mapping -->
+              <SWC-TO-ECU-MAPPING>
+                <SHORT-NAME>SpeedSensorSwcMapping</SHORT-NAME>
+                <ECU-INSTANCE-REF DEST="ECU-INSTANCE">/ABSMalfunctionDetectionSystem/ABSSystem/ECUs/ABS_ECU</ECU-INSTANCE-REF>
+                <COMPONENT-IREFS>
+                  <COMPONENT-IREF>
+                    <CONTEXT-COMPOSITION-REF DEST="ROOT-SW-COMPOSITION-PROTOTYPE">/ABSMalfunctionDetectionSystem/ABSSystem/RootComposition</CONTEXT-COMPOSITION-REF>
+                    <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/SpeedSensorSwcPrototype</TARGET-COMPONENT-REF>
+                  </COMPONENT-IREF>
+                </COMPONENT-IREFS>
+              </SWC-TO-ECU-MAPPING>
+              
+              <!-- ABS Malfunction Detection SWC Mapping -->
+              <SWC-TO-ECU-MAPPING>
+                <SHORT-NAME>ABSMalfunctionDetectionSwcMapping</SHORT-NAME>
+                <ECU-INSTANCE-REF DEST="ECU-INSTANCE">/ABSMalfunctionDetectionSystem/ABSSystem/ECUs/ABS_ECU</ECU-INSTANCE-REF>
+                <COMPONENT-IREFS>
+                  <COMPONENT-IREF>
+                    <CONTEXT-COMPOSITION-REF DEST="ROOT-SW-COMPOSITION-PROTOTYPE">/ABSMalfunctionDetectionSystem/ABSSystem/RootComposition</CONTEXT-COMPOSITION-REF>
+                    <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/ABSMalfunctionDetectionSwcPrototype</TARGET-COMPONENT-REF>
+                  </COMPONENT-IREF>
+                </COMPONENT-IREFS>
+              </SWC-TO-ECU-MAPPING>
+              
+            </SW-MAPPINGS>
+            
+          </MAPPINGS>
+          
+          <!-- ECU Instances -->
+          <ECU-INSTANCES>
+            
+            <ECU-INSTANCE>
+              <SHORT-NAME>ABS_ECU</SHORT-NAME>
+              <ECU-INSTANCE-PROPS>
+                <ECU-INSTANCE-PROPS-VARIANTS>
+                  <ECU-INSTANCE-PROPS-CONDITIONAL>
+                    <WAKE-UP-OVER-BUS-SUPPORTED>true</WAKE-UP-OVER-BUS-SUPPORTED>
+                  </ECU-INSTANCE-PROPS-CONDITIONAL>
+                </ECU-INSTANCE-PROPS-VARIANTS>
+              </ECU-INSTANCE-PROPS>
+            </ECU-INSTANCE>
+            
+          </ECU-INSTANCES>
+          
+          <!-- Root Software Composition -->
+          <ROOT-SW-COMPOSITIONS>
+            <ROOT-SW-COMPOSITION-PROTOTYPE>
+              <SHORT-NAME>RootComposition</SHORT-NAME>
+              <SOFTWARE-COMPOSITION-TREF DEST="COMPOSITION-SW-COMPONENT-TYPE">/Compositions/ABSComposition</SOFTWARE-COMPOSITION-TREF>
+            </ROOT-SW-COMPOSITION-PROTOTYPE>
+          </ROOT-SW-COMPOSITIONS>
+          
+        </SYSTEM>
+        
+      </ELEMENTS>
+      
+    </AR-PACKAGE>
+    
+    <!-- Software Compositions Package -->
+    <AR-PACKAGE>
+      <SHORT-NAME>Compositions</SHORT-NAME>
+      
+      <ELEMENTS>
+        
+        <!-- Main ABS Composition -->
+        <COMPOSITION-SW-COMPONENT-TYPE>
+          <SHORT-NAME>ABSComposition</SHORT-NAME>
+          <LONG-NAME>
+            <L-4 L="EN">ABS Malfunction Detection Composition</L-4>
+          </LONG-NAME>
+          <DESC>
+            <L-2 L="EN">Composition containing speed sensor and malfunction detection components</L-2>
+          </DESC>
+          
+          <!-- Component Prototypes -->
+          <COMPONENTS>
+            
+            <!-- Speed Sensor Component -->
+            <SW-COMPONENT-PROTOTYPE>
+              <SHORT-NAME>SpeedSensorSwcPrototype</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/ApplicationSoftwareComponents/SpeedSensorSwc</TYPE-TREF>
+            </SW-COMPONENT-PROTOTYPE>
+            
+            <!-- ABS Malfunction Detection Component -->
+            <SW-COMPONENT-PROTOTYPE>
+              <SHORT-NAME>ABSMalfunctionDetectionSwcPrototype</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/ApplicationSoftwareComponents/ABSMalfunctionDetectionSwc</TYPE-TREF>
+            </SW-COMPONENT-PROTOTYPE>
+            
+            <!-- Calibration Manager Component -->
+            <SW-COMPONENT-PROTOTYPE>
+              <SHORT-NAME>CalibrationManagerPrototype</SHORT-NAME>
+              <TYPE-TREF DEST="SERVICE-SW-COMPONENT-TYPE">/ServiceComponents/CalibrationManagerSwc</TYPE-TREF>
+            </SW-COMPONENT-PROTOTYPE>
+            
+            <!-- Diagnostic Service Component -->
+            <SW-COMPONENT-PROTOTYPE>
+              <SHORT-NAME>DiagnosticServicePrototype</SHORT-NAME>
+              <TYPE-TREF DEST="SERVICE-SW-COMPONENT-TYPE">/ServiceComponents/DiagnosticServiceSwc</TYPE-TREF>
+            </SW-COMPONENT-PROTOTYPE>
+            
+          </COMPONENTS>
+          
+          <!-- Connectors -->
+          <CONNECTORS>
+            
+            <!-- Speed Data Connections (Speed Sensor -> ABS Malfunction Detection) -->
+            <ASSEMBLY-SW-CONNECTOR>
+              <SHORT-NAME>SpeedData_FL_Connector</SHORT-NAME>
+              <PROVIDER-IREF>
+                <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/SpeedSensorSwcPrototype</CONTEXT-COMPONENT-REF>
+                <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/ApplicationSoftwareComponents/SpeedSensorSwc/SpeedData_FL</TARGET-P-PORT-REF>
+              </PROVIDER-IREF>
+              <REQUESTER-IREF>
+                <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/ABSMalfunctionDetectionSwcPrototype</CONTEXT-COMPONENT-REF>
+                <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ApplicationSoftwareComponents/ABSMalfunctionDetectionSwc/SpeedData_FL_In</TARGET-R-PORT-REF>
+              </REQUESTER-IREF>
+            </ASSEMBLY-SW-CONNECTOR>
+            
+            <ASSEMBLY-SW-CONNECTOR>
+              <SHORT-NAME>SpeedData_FR_Connector</SHORT-NAME>
+              <PROVIDER-IREF>
+                <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/SpeedSensorSwcPrototype</CONTEXT-COMPONENT-REF>
+                <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/ApplicationSoftwareComponents/SpeedSensorSwc/SpeedData_FR</TARGET-P-PORT-REF>
+              </PROVIDER-IREF>
+              <REQUESTER-IREF>
+                <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/ABSMalfunctionDetectionSwcPrototype</CONTEXT-COMPONENT-REF>
+                <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ApplicationSoftwareComponents/ABSMalfunctionDetectionSwc/SpeedData_FR_In</TARGET-R-PORT-REF>
+              </REQUESTER-IREF>
+            </ASSEMBLY-SW-CONNECTOR>
+            
+            <ASSEMBLY-SW-CONNECTOR>
+              <SHORT-NAME>SpeedData_RL_Connector</SHORT-NAME>
+              <PROVIDER-IREF>
+                <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/SpeedSensorSwcPrototype</CONTEXT-COMPONENT-REF>
+                <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/ApplicationSoftwareComponents/SpeedSensorSwc/SpeedData_RL</TARGET-P-PORT-REF>
+              </PROVIDER-IREF>
+              <REQUESTER-IREF>
+                <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/ABSMalfunctionDetectionSwcPrototype</CONTEXT-COMPONENT-REF>
+                <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ApplicationSoftwareComponents/ABSMalfunctionDetectionSwc/SpeedData_RL_In</TARGET-R-PORT-REF>
+              </REQUESTER-IREF>
+            </ASSEMBLY-SW-CONNECTOR>
+            
+            <ASSEMBLY-SW-CONNECTOR>
+              <SHORT-NAME>SpeedData_RR_Connector</SHORT-NAME>
+              <PROVIDER-IREF>
+                <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/SpeedSensorSwcPrototype</CONTEXT-COMPONENT-REF>
+                <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/ApplicationSoftwareComponents/SpeedSensorSwc/SpeedData_RR</TARGET-P-PORT-REF>
+              </PROVIDER-IREF>
+              <REQUESTER-IREF>
+                <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/ABSMalfunctionDetectionSwcPrototype</CONTEXT-COMPONENT-REF>
+                <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ApplicationSoftwareComponents/ABSMalfunctionDetectionSwc/SpeedData_RR_In</TARGET-R-PORT-REF>
+              </REQUESTER-IREF>
+            </ASSEMBLY-SW-CONNECTOR>
+            
+            <!-- Calibration Service Connection -->
+            <ASSEMBLY-SW-CONNECTOR>
+              <SHORT-NAME>CalibrationService_Connector</SHORT-NAME>
+              <PROVIDER-IREF>
+                <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/SpeedSensorSwcPrototype</CONTEXT-COMPONENT-REF>
+                <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/ApplicationSoftwareComponents/SpeedSensorSwc/CalibrationService</TARGET-P-PORT-REF>
+              </PROVIDER-IREF>
+              <REQUESTER-IREF>
+                <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/CalibrationManagerPrototype</CONTEXT-COMPONENT-REF>
+                <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ServiceComponents/CalibrationManagerSwc/CalibrationService_R</TARGET-R-PORT-REF>
+              </REQUESTER-IREF>
+            </ASSEMBLY-SW-CONNECTOR>
+            
+          </CONNECTORS>
+          
+          <!-- Composition Ports (External Interfaces) -->
+          <PORTS>
+            
+            <!-- External Interface for Malfunction Status -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>MalfunctionStatus_Out</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/MalfunctionStatusInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <!-- External Interface for System State -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>SystemState_Out</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/SystemStateInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+            <!-- External Interface for Raw Sensor Data Input -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>RawSensorData_In</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/RawSensorDataInterface</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+          </PORTS>
+          
+          <!-- Port to Internal Component Connectors -->
+          <CONNECTORS>
+            
+            <!-- External Malfunction Status Output -->
+            <DELEGATION-SW-CONNECTOR>
+              <SHORT-NAME>MalfunctionStatus_Delegation</SHORT-NAME>
+              <INNER-PORT-IREF>
+                <P-PORT-IN-COMPOSITION-INSTANCE-REF>
+                  <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/ABSMalfunctionDetectionSwcPrototype</CONTEXT-COMPONENT-REF>
+                  <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/ApplicationSoftwareComponents/ABSMalfunctionDetectionSwc/MalfunctionStatus_FL</TARGET-P-PORT-REF>
+                </P-PORT-IN-COMPOSITION-INSTANCE-REF>
+              </INNER-PORT-IREF>
+              <OUTER-PORT-REF DEST="P-PORT-PROTOTYPE">/Compositions/ABSComposition/MalfunctionStatus_Out</OUTER-PORT-REF>
+            </DELEGATION-SW-CONNECTOR>
+            
+            <!-- External System State Output -->
+            <DELEGATION-SW-CONNECTOR>
+              <SHORT-NAME>SystemState_Delegation</SHORT-NAME>
+              <INNER-PORT-IREF>
+                <P-PORT-IN-COMPOSITION-INSTANCE-REF>
+                  <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/ABSMalfunctionDetectionSwcPrototype</CONTEXT-COMPONENT-REF>
+                  <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/ApplicationSoftwareComponents/ABSMalfunctionDetectionSwc/SystemState</TARGET-P-PORT-REF>
+                </P-PORT-IN-COMPOSITION-INSTANCE-REF>
+              </INNER-PORT-IREF>
+              <OUTER-PORT-REF DEST="P-PORT-PROTOTYPE">/Compositions/ABSComposition/SystemState_Out</OUTER-PORT-REF>
+            </DELEGATION-SW-CONNECTOR>
+            
+            <!-- External Raw Sensor Data Input -->
+            <DELEGATION-SW-CONNECTOR>
+              <SHORT-NAME>RawSensorData_Delegation</SHORT-NAME>
+              <INNER-PORT-IREF>
+                <R-PORT-IN-COMPOSITION-INSTANCE-REF>
+                  <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Compositions/ABSComposition/SpeedSensorSwcPrototype</CONTEXT-COMPONENT-REF>
+                  <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ApplicationSoftwareComponents/SpeedSensorSwc/RawSensorData_FL</TARGET-R-PORT-REF>
+                </R-PORT-IN-COMPOSITION-INSTANCE-REF>
+              </INNER-PORT-IREF>
+              <OUTER-PORT-REF DEST="R-PORT-PROTOTYPE">/Compositions/ABSComposition/RawSensorData_In</OUTER-PORT-REF>
+            </DELEGATION-SW-CONNECTOR>
+            
+          </CONNECTORS>
+          
+        </COMPOSITION-SW-COMPONENT-TYPE>
+        
+      </ELEMENTS>
+      
+    </AR-PACKAGE>
+    
+    <!-- Service Components Package -->
+    <AR-PACKAGE>
+      <SHORT-NAME>ServiceComponents</SHORT-NAME>
+      
+      <ELEMENTS>
+        
+        <!-- Calibration Manager Service Component -->
+        <SERVICE-SW-COMPONENT-TYPE>
+          <SHORT-NAME>CalibrationManagerSwc</SHORT-NAME>
+          <LONG-NAME>
+            <L-4 L="EN">Calibration Manager Service Component</L-4>
+          </LONG-NAME>
+          <DESC>
+            <L-2 L="EN">Service component for managing speed sensor calibration</L-2>
+          </DESC>
+          
+          <PORTS>
+            
+            <!-- Required Port for Calibration Service -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>CalibrationService_R</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Interfaces/CalibrationServiceInterface</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <!-- Provided Port for NVM Service -->
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>NvmService</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Interfaces/NvmServiceInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+          </PORTS>
+          
+        </SERVICE-SW-COMPONENT-TYPE>
+        
+        <!-- Diagnostic Service Component -->
+        <SERVICE-SW-COMPONENT-TYPE>
+          <SHORT-NAME>DiagnosticServiceSwc</SHORT-NAME>
+          <LONG-NAME>
+            <L-4 L="EN">Diagnostic Service Component</L-4>
+          </LONG-NAME>
+          <DESC>
+            <L-2 L="EN">Service component for UDS diagnostic services and DTC management</L-2>
+          </DESC>
+          
+          <PORTS>
+            
+            <!-- UDS Communication Ports -->
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>UDSRequest</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/UDSMessageInterface</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>UDSResponse</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/UDSMessageInterface</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            
+          </PORTS>
+          
+        </SERVICE-SW-COMPONENT-TYPE>
+        
+      </ELEMENTS>
+      
+    </AR-PACKAGE>
+    
+  </AR-PACKAGES>
+  
+</AUTOSAR>

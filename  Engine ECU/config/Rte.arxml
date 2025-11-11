@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://autosar.org/schema/r4.0 autosar_4-2-2.xsd">
+    
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>Rte</SHORT-NAME>
+            <ELEMENTS>
+                <!-- RTE Configuration -->
+                <BSW-MODULE-DESCRIPTION>
+                    <SHORT-NAME>Rte</SHORT-NAME>
+                    <MODULE-ID>255</MODULE-ID>
+                    <PROVIDED-ENTRYS>
+                        <BSW-MODULE-ENTRY>
+                            <SHORT-NAME>RteInit</SHORT-NAME>
+                            <SERVICE-ID>0x00</SERVICE-ID>
+                            <IS-REENTRANT>false</IS-REENTRANT>
+                            <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+                            <CALL-TYPE>REGULAR</CALL-TYPE>
+                        </BSW-MODULE-ENTRY>
+                        <BSW-MODULE-ENTRY>
+                            <SHORT-NAME>RteStart</SHORT-NAME>
+                            <SERVICE-ID>0x01</SERVICE-ID>
+                            <IS-REENTRANT>false</IS-REENTRANT>
+                            <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+                            <CALL-TYPE>REGULAR</CALL-TYPE>
+                        </BSW-MODULE-ENTRY>
+                        <BSW-MODULE-ENTRY>
+                            <SHORT-NAME>RteStop</SHORT-NAME>
+                            <SERVICE-ID>0x02</SERVICE-ID>
+                            <IS-REENTRANT>false</IS-REENTRANT>
+                            <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+                            <CALL-TYPE>REGULAR</CALL-TYPE>
+                        </BSW-MODULE-ENTRY>
+                    </PROVIDED-ENTRYS>
+                    <INTERNAL-BEHAVIORS>
+                        <BSW-INTERNAL-BEHAVIOR>
+                            <SHORT-NAME>RteBehavior</SHORT-NAME>
+                            <EXCLUSIVE-AREAS/>
+                            <ENTITYS>
+                                <BSW-SCHEDULABLE-ENTITY>
+                                    <SHORT-NAME>RteMainFunction</SHORT-NAME>
+                                    <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Rte/RteMainFunction</IMPLEMENTED-ENTRY-REF>
+                                </BSW-SCHEDULABLE-ENTITY>
+                            </ENTITYS>
+                        </BSW-INTERNAL-BEHAVIOR>
+                    </INTERNAL-BEHAVIORS>
+                </BSW-MODULE-DESCRIPTION>
+                
+                <!-- RTE Events -->
+                <RTE-EVENT>
+                    <SHORT-NAME>InitEvent</SHORT-NAME>
+                    <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/SwComponents/EngineControl/InitRunnable</START-ON-EVENT-REF>
+                </RTE-EVENT>
+                <RTE-EVENT>
+                    <SHORT-NAME>CyclicEvent_10ms</SHORT-NAME>
+                    <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/SwComponents/EngineControl/MainRunnable_10ms</START-ON-EVENT-REF>
+                    <PERIOD>0.01</PERIOD>
+                </RTE-EVENT>
+                <RTE-EVENT>
+                    <SHORT-NAME>CyclicEvent_100ms</SHORT-NAME>
+                    <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/SwComponents/EngineControl/MainRunnable_100ms</START-ON-EVENT-REF>
+                    <PERIOD>0.1</PERIOD>
+                </RTE-EVENT>
+            </ELEMENTS>
+        </AR-PACKAGE>
+        
+        <!-- Software Components Package -->
+        <AR-PACKAGE>
+            <SHORT-NAME>SwComponents</SHORT-NAME>
+            <ELEMENTS>
+                <APPLICATION-SW-COMPONENT-TYPE>
+                    <SHORT-NAME>EngineControl</SHORT-NAME>
+                    <PORTS>
+                        <P-PORT-PROTOTYPE>
+                            <SHORT-NAME>EngineSpeed</SHORT-NAME>
+                            <PROVIDED-COM-SPECS>
+                                <NONQUEUED-SENDER-COM-SPEC>
+                                    <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/Interfaces/EngineSpeed/Value</DATA-ELEMENT-REF>
+                                    <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                                    <INIT-VALUE>
+                                        <NUMERICAL-VALUE-SPECIFICATION>
+                                            <VALUE>0</VALUE>
+                                        </NUMERICAL-VALUE-SPECIFICATION>
+                                    </INIT-VALUE>
+                                </NONQUEUED-SENDER-COM-SPEC>
+                            </PROVIDED-COM-SPECS>
+                        </P-PORT-PROTOTYPE>
+                        <R-PORT-PROTOTYPE>
+                            <SHORT-NAME>ThrottlePosition</SHORT-NAME>
+                            <REQUIRED-COM-SPECS>
+                                <NONQUEUED-RECEIVER-COM-SPEC>
+                                    <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/Interfaces/ThrottlePosition/Value</DATA-ELEMENT-REF>
+                                    <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                                    <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                                    <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                                    <FILTER>
+                                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                                    </FILTER>
+                                    <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                                    <INIT-VALUE>
+                                        <NUMERICAL-VALUE-SPECIFICATION>
+                                            <VALUE>0</VALUE>
+                                        </NUMERICAL-VALUE-SPECIFICATION>
+                                    </INIT-VALUE>
+                                </NONQUEUED-RECEIVER-COM-SPEC>
+                            </REQUIRED-COM-SPECS>
+                        </R-PORT-PROTOTYPE>
+                    </PORTS>
+                    <INTERNAL-BEHAVIORS>
+                        <SWC-INTERNAL-BEHAVIOR>
+                            <SHORT-NAME>EngineControlBehavior</SHORT-NAME>
+                            <DATA-TYPE-MAPPING-REFS/>
+                            <EXCLUSIVE-AREAS/>
+                            <INTER-RUNNABLE-VARIABLES/>
+                            <RUNNABLES>
+                                <RUNNABLE-ENTITY>
+                                    <SHORT-NAME>InitRunnable</SHORT-NAME>
+                                    <MINIMUM-START-INTERVAL>0</MINIMUM-START-INTERVAL>
+                                    <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                                    <SYMBOL>RE_EngineControl_Init</SYMBOL>
+                                </RUNNABLE-ENTITY>
+                                <RUNNABLE-ENTITY>
+                                    <SHORT-NAME>MainRunnable_10ms</SHORT-NAME>
+                                    <MINIMUM-START-INTERVAL>0.01</MINIMUM-START-INTERVAL>
+                                    <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                                    <SYMBOL>RE_EngineControl_Main_10ms</SYMBOL>
+                                </RUNNABLE-ENTITY>
+                                <RUNNABLE-ENTITY>
+                                    <SHORT-NAME>MainRunnable_100ms</SHORT-NAME>
+                                    <MINIMUM-START-INTERVAL>0.1</MINIMUM-START-INTERVAL>
+                                    <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                                    <SYMBOL>RE_EngineControl_Main_100ms</SYMBOL>
+                                </RUNNABLE-ENTITY>
+                            </RUNNABLES>
+                            <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                        </SWC-INTERNAL-BEHAVIOR>
+                    </INTERNAL-BEHAVIORS>
+                </APPLICATION-SW-COMPONENT-TYPE>
+            </ELEMENTS>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

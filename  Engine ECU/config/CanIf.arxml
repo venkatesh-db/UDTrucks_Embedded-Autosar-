@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://autosar.org/schema/r4.0 autosar_4-2-2.xsd">
+    
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>CanIf</SHORT-NAME>
+            <ELEMENTS>
+                <BSW-MODULE-DESCRIPTION>
+                    <SHORT-NAME>CanIf</SHORT-NAME>
+                    <MODULE-ID>60</MODULE-ID>
+                    <PROVIDED-ENTRYS>
+                        <BSW-MODULE-ENTRY>
+                            <SHORT-NAME>CanIfInit</SHORT-NAME>
+                            <SERVICE-ID>0x01</SERVICE-ID>
+                            <IS-REENTRANT>false</IS-REENTRANT>
+                            <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+                            <CALL-TYPE>REGULAR</CALL-TYPE>
+                        </BSW-MODULE-ENTRY>
+                        <BSW-MODULE-ENTRY>
+                            <SHORT-NAME>CanIfDeInit</SHORT-NAME>
+                            <SERVICE-ID>0x02</SERVICE-ID>
+                            <IS-REENTRANT>false</IS-REENTRANT>
+                            <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+                            <CALL-TYPE>REGULAR</CALL-TYPE>
+                        </BSW-MODULE-ENTRY>
+                        <BSW-MODULE-ENTRY>
+                            <SHORT-NAME>CanIfSetControllerMode</SHORT-NAME>
+                            <SERVICE-ID>0x03</SERVICE-ID>
+                            <IS-REENTRANT>false</IS-REENTRANT>
+                            <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+                            <CALL-TYPE>REGULAR</CALL-TYPE>
+                        </BSW-MODULE-ENTRY>
+                        <BSW-MODULE-ENTRY>
+                            <SHORT-NAME>CanIfTransmit</SHORT-NAME>
+                            <SERVICE-ID>0x49</SERVICE-ID>
+                            <IS-REENTRANT>true</IS-REENTRANT>
+                            <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+                            <CALL-TYPE>REGULAR</CALL-TYPE>
+                        </BSW-MODULE-ENTRY>
+                    </PROVIDED-ENTRYS>
+                    
+                    <INTERNAL-BEHAVIORS>
+                        <BSW-INTERNAL-BEHAVIOR>
+                            <SHORT-NAME>CanIfBehavior</SHORT-NAME>
+                            <EXCLUSIVE-AREAS/>
+                            <ENTITYS>
+                                <BSW-SCHEDULABLE-ENTITY>
+                                    <SHORT-NAME>CanIfMainFunction</SHORT-NAME>
+                                    <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/CanIf/CanIfMainFunction</IMPLEMENTED-ENTRY-REF>
+                                </BSW-SCHEDULABLE-ENTITY>
+                            </ENTITYS>
+                        </BSW-INTERNAL-BEHAVIOR>
+                    </INTERNAL-BEHAVIORS>
+                </BSW-MODULE-DESCRIPTION>
+                
+                <!-- CAN Interface Configuration -->
+                <CAN-IF-CONFIG>
+                    <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    <CAN-IF-INIT-CONFIGURATION>
+                        <CAN-IF-CONTROLLER-CONFIGS>
+                            <CAN-IF-CONTROLLER-CONFIG>
+                                <SHORT-NAME>CanIfController_0</SHORT-NAME>
+                                <CAN-IF-CTRL-ID>0</CAN-IF-CTRL-ID>
+                                <CAN-IF-CTRL-CAN-CTRL-REF DEST="CAN-CONTROLLER-CONFIG">/EcuC/CAN_Controller_0/CanControllerConfig_0</CAN-IF-CTRL-CAN-CTRL-REF>
+                                <CAN-IF-CTRL-WAKEUP-SUPPORT>false</CAN-IF-CTRL-WAKEUP-SUPPORT>
+                            </CAN-IF-CONTROLLER-CONFIG>
+                        </CAN-IF-CONTROLLER-CONFIGS>
+                        
+                        <CAN-IF-HTH-CONFIGS>
+                            <CAN-IF-HTH-CONFIG>
+                                <SHORT-NAME>CanIfHTH_EngineSpeed</SHORT-NAME>
+                                <CAN-IF-HTH-ID-SYM-REF>0x100</CAN-IF-HTH-ID-SYM-REF>
+                                <CAN-IF-HTH-CAN-CTRL-ID-REF DEST="CAN-IF-CONTROLLER-CONFIG">/CanIf/CanIfController_0</CAN-IF-HTH-CAN-CTRL-ID-REF>
+                                <CAN-OBJECT-TYPE>TRANSMIT</CAN-OBJECT-TYPE>
+                            </CAN-IF-HTH-CONFIG>
+                            <CAN-IF-HTH-CONFIG>
+                                <SHORT-NAME>CanIfHTH_EngineTemp</SHORT-NAME>
+                                <CAN-IF-HTH-ID-SYM-REF>0x101</CAN-IF-HTH-ID-SYM-REF>
+                                <CAN-IF-HTH-CAN-CTRL-ID-REF DEST="CAN-IF-CONTROLLER-CONFIG">/CanIf/CanIfController_0</CAN-IF-HTH-CAN-CTRL-ID-REF>
+                                <CAN-OBJECT-TYPE>TRANSMIT</CAN-OBJECT-TYPE>
+                            </CAN-IF-HTH-CONFIG>
+                        </CAN-IF-HTH-CONFIGS>
+                        
+                        <CAN-IF-HRH-CONFIGS>
+                            <CAN-IF-HRH-CONFIG>
+                                <SHORT-NAME>CanIfHRH_ThrottlePos</SHORT-NAME>
+                                <CAN-IF-HRH-ID-SYM-REF>0x200</CAN-IF-HRH-ID-SYM-REF>
+                                <CAN-IF-HRH-CAN-CTRL-ID-REF DEST="CAN-IF-CONTROLLER-CONFIG">/CanIf/CanIfController_0</CAN-IF-HRH-CAN-CTRL-ID-REF>
+                                <CAN-OBJECT-TYPE>RECEIVE</CAN-OBJECT-TYPE>
+                                <CAN-IF-SOFTWARE-FILTER-HRH>true</CAN-IF-SOFTWARE-FILTER-HRH>
+                            </CAN-IF-HRH-CONFIG>
+                            <CAN-IF-HRH-CONFIG>
+                                <SHORT-NAME>CanIfHRH_BrakeStatus</SHORT-NAME>
+                                <CAN-IF-HRH-ID-SYM-REF>0x201</CAN-IF-HRH-ID-SYM-REF>
+                                <CAN-IF-HRH-CAN-CTRL-ID-REF DEST="CAN-IF-CONTROLLER-CONFIG">/CanIf/CanIfController_0</CAN-IF-HRH-CAN-CTRL-ID-REF>
+                                <CAN-OBJECT-TYPE>RECEIVE</CAN-OBJECT-TYPE>
+                                <CAN-IF-SOFTWARE-FILTER-HRH>true</CAN-IF-SOFTWARE-FILTER-HRH>
+                            </CAN-IF-HRH-CONFIG>
+                        </CAN-IF-HRH-CONFIGS>
+                        
+                        <CAN-IF-TX-PDU-CONFIGS>
+                            <CAN-IF-TX-PDU-CONFIG>
+                                <SHORT-NAME>CanIfTxPdu_EngineSpeed</SHORT-NAME>
+                                <CAN-IF-TX-PDU-ID>0</CAN-IF-TX-PDU-ID>
+                                <CAN-IF-TX-PDU-CAN-ID>0x100</CAN-IF-TX-PDU-CAN-ID>
+                                <CAN-IF-TX-PDU-CAN-ID-TYPE>STANDARD</CAN-IF-TX-PDU-CAN-ID-TYPE>
+                                <CAN-IF-TX-PDU-DLC>8</CAN-IF-TX-PDU-DLC>
+                                <CAN-IF-TX-PDU-HTH-REF DEST="CAN-IF-HTH-CONFIG">/CanIf/CanIfHTH_EngineSpeed</CAN-IF-TX-PDU-HTH-REF>
+                                <CAN-IF-TX-PDU-TRIGGER-TRANSMIT>false</CAN-IF-TX-PDU-TRIGGER-TRANSMIT>
+                                <CAN-IF-TX-PDU-TX-CONFIRMATION>true</CAN-IF-TX-PDU-TX-CONFIRMATION>
+                            </CAN-IF-TX-PDU-CONFIG>
+                            <CAN-IF-TX-PDU-CONFIG>
+                                <SHORT-NAME>CanIfTxPdu_EngineTemp</SHORT-NAME>
+                                <CAN-IF-TX-PDU-ID>1</CAN-IF-TX-PDU-ID>
+                                <CAN-IF-TX-PDU-CAN-ID>0x101</CAN-IF-TX-PDU-CAN-ID>
+                                <CAN-IF-TX-PDU-CAN-ID-TYPE>STANDARD</CAN-IF-TX-PDU-CAN-ID-TYPE>
+                                <CAN-IF-TX-PDU-DLC>8</CAN-IF-TX-PDU-DLC>
+                                <CAN-IF-TX-PDU-HTH-REF DEST="CAN-IF-HTH-CONFIG">/CanIf/CanIfHTH_EngineTemp</CAN-IF-TX-PDU-HTH-REF>
+                                <CAN-IF-TX-PDU-TRIGGER-TRANSMIT>false</CAN-IF-TX-PDU-TRIGGER-TRANSMIT>
+                                <CAN-IF-TX-PDU-TX-CONFIRMATION>true</CAN-IF-TX-PDU-TX-CONFIRMATION>
+                            </CAN-IF-TX-PDU-CONFIG>
+                        </CAN-IF-TX-PDU-CONFIGS>
+                        
+                        <CAN-IF-RX-PDU-CONFIGS>
+                            <CAN-IF-RX-PDU-CONFIG>
+                                <SHORT-NAME>CanIfRxPdu_ThrottlePos</SHORT-NAME>
+                                <CAN-IF-RX-PDU-ID>0</CAN-IF-RX-PDU-ID>
+                                <CAN-IF-RX-PDU-CAN-ID>0x200</CAN-IF-RX-PDU-CAN-ID>
+                                <CAN-IF-RX-PDU-CAN-ID-TYPE>STANDARD</CAN-IF-RX-PDU-CAN-ID-TYPE>
+                                <CAN-IF-RX-PDU-DLC>8</CAN-IF-RX-PDU-DLC>
+                                <CAN-IF-RX-PDU-HRH-ID-REF DEST="CAN-IF-HRH-CONFIG">/CanIf/CanIfHRH_ThrottlePos</CAN-IF-RX-PDU-HRH-ID-REF>
+                                <CAN-IF-RX-PDU-READ-NOTIFY-STATUS>true</CAN-IF-RX-PDU-READ-NOTIFY-STATUS>
+                            </CAN-IF-RX-PDU-CONFIG>
+                            <CAN-IF-RX-PDU-CONFIG>
+                                <SHORT-NAME>CanIfRxPdu_BrakeStatus</SHORT-NAME>
+                                <CAN-IF-RX-PDU-ID>1</CAN-IF-RX-PDU-ID>
+                                <CAN-IF-RX-PDU-CAN-ID>0x201</CAN-IF-RX-PDU-CAN-ID>
+                                <CAN-IF-RX-PDU-CAN-ID-TYPE>STANDARD</CAN-IF-RX-PDU-CAN-ID-TYPE>
+                                <CAN-IF-RX-PDU-DLC>8</CAN-IF-RX-PDU-DLC>
+                                <CAN-IF-RX-PDU-HRH-ID-REF DEST="CAN-IF-HRH-CONFIG">/CanIf/CanIfHRH_BrakeStatus</CAN-IF-RX-PDU-HRH-ID-REF>
+                                <CAN-IF-RX-PDU-READ-NOTIFY-STATUS>true</CAN-IF-RX-PDU-READ-NOTIFY-STATUS>
+                            </CAN-IF-RX-PDU-CONFIG>
+                        </CAN-IF-RX-PDU-CONFIGS>
+                    </CAN-IF-INIT-CONFIGURATION>
+                </CAN-IF-CONFIG>
+            </ELEMENTS>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

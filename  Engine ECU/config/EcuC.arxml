@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://autosar.org/schema/r4.0 autosar_4-2-2.xsd">
+    
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>EcuC</SHORT-NAME>
+            <ELEMENTS>
+                <ECU-INSTANCE>
+                    <SHORT-NAME>EngineECU</SHORT-NAME>
+                    <DESC>
+                        <L-2 L="EN">Engine Control Unit Configuration</L-2>
+                    </DESC>
+                    <ADMIN-DATA>
+                        <SDGS>
+                            <SDG GID="DV:ECUInstance">
+                                <SD GID="DV:ECUName">EngineECU</SD>
+                                <SD GID="DV:ECUPartNumber">ECU-ENG-001</SD>
+                                <SD GID="DV:ECUVersion">1.0.0</SD>
+                            </SDG>
+                        </SDGS>
+                    </ADMIN-DATA>
+                    <ASSOCIATED-COM-I-PDU-GROUP-REFS/>
+                    <COMM-CONTROLLERS>
+                        <CAN-COMMUNICATION-CONTROLLER>
+                            <SHORT-NAME>CAN_Controller_0</SHORT-NAME>
+                            <CAN-IF-CONFIG>
+                                <INIT-CONFIG-SET>
+                                    <CAN-CONTROLLER-CONFIGS>
+                                        <CAN-CONTROLLER-CONFIG>
+                                            <SHORT-NAME>CanControllerConfig_0</SHORT-NAME>
+                                            <CONTROLLER-ID>0</CONTROLLER-ID>
+                                            <DEFAULT-BAUD-RATE>500000</DEFAULT-BAUD-RATE>
+                                            <MAX-BAUD-RATE>1000000</MAX-BAUD-RATE>
+                                            <SYNC-JUMP-WIDTH>1</SYNC-JUMP-WIDTH>
+                                            <PROP-SEG>2</PROP-SEG>
+                                            <PHASE-SEG1>5</PHASE-SEG1>
+                                            <PHASE-SEG2>2</PHASE-SEG2>
+                                        </CAN-CONTROLLER-CONFIG>
+                                    </CAN-CONTROLLER-CONFIGS>
+                                </INIT-CONFIG-SET>
+                            </CAN-IF-CONFIG>
+                        </CAN-COMMUNICATION-CONTROLLER>
+                    </COMM-CONTROLLERS>
+                    <DIAGNOSTIC-ADDRESS>0x10</DIAGNOSTIC-ADDRESS>
+                    <FUNCTION-GROUP-SET>
+                        <FUNCTION-GROUPS>
+                            <MODE-DECLARATION-GROUP-PROTOTYPE>
+                                <SHORT-NAME>VehicleMode</SHORT-NAME>
+                                <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/VehicleModes/VehicleMode</TYPE-TREF>
+                            </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        </FUNCTION-GROUPS>
+                    </FUNCTION-GROUP-SET>
+                </ECU-INSTANCE>
+            </ELEMENTS>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://autosar.org/schema/r4.0 autosar_4-2-2.xsd">
+    
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>Os</SHORT-NAME>
+            <ELEMENTS>
+                <OS>
+                    <SHORT-NAME>EngineECU_OS</SHORT-NAME>
+                    <DESC>
+                        <L-2 L="EN">Operating System Configuration for Engine ECU</L-2>
+                    </DESC>
+                    <CC>ECC1</CC>
+                    <STATUS>EXTENDED</STATUS>
+                    <USEGETSERVICEID>true</USEGETSERVICEID>
+                    <USEPARAMETERACCESS>true</USEPARAMETERACCESS>
+                    <USERESSCHEDULER>true</USERESSCHEDULER>
+                    
+                    <!-- OS Tasks -->
+                    <OS-TASKS>
+                        <OS-TASK>
+                            <SHORT-NAME>StartupTask</SHORT-NAME>
+                            <PRIORITY>15</PRIORITY>
+                            <SCHEDULE>FULL</SCHEDULE>
+                            <ACTIVATION>1</ACTIVATION>
+                            <AUTOSTART>true</AUTOSTART>
+                            <STACK-SIZE>2048</STACK-SIZE>
+                            <EVENT-MASK>0</EVENT-MASK>
+                        </OS-TASK>
+                        <OS-TASK>
+                            <SHORT-NAME>MainTask_10ms</SHORT-NAME>
+                            <PRIORITY>10</PRIORITY>
+                            <SCHEDULE>FULL</SCHEDULE>
+                            <ACTIVATION>1</ACTIVATION>
+                            <AUTOSTART>false</AUTOSTART>
+                            <STACK-SIZE>4096</STACK-SIZE>
+                        </OS-TASK>
+                        <OS-TASK>
+                            <SHORT-NAME>MainTask_100ms</SHORT-NAME>
+                            <PRIORITY>5</PRIORITY>
+                            <SCHEDULE>FULL</SCHEDULE>
+                            <ACTIVATION>1</ACTIVATION>
+                            <AUTOSTART>false</AUTOSTART>
+                            <STACK-SIZE>3072</STACK-SIZE>
+                        </OS-TASK>
+                        <OS-TASK>
+                            <SHORT-NAME>BackgroundTask</SHORT-NAME>
+                            <PRIORITY>1</PRIORITY>
+                            <SCHEDULE>FULL</SCHEDULE>
+                            <ACTIVATION>1</ACTIVATION>
+                            <AUTOSTART>false</AUTOSTART>
+                            <STACK-SIZE>2048</STACK-SIZE>
+                        </OS-TASK>
+                    </OS-TASKS>
+                    
+                    <!-- OS Counters -->
+                    <OS-COUNTERS>
+                        <OS-COUNTER>
+                            <SHORT-NAME>SystemTimer</SHORT-NAME>
+                            <MAX-ALLOWED-VALUE>65535</MAX-ALLOWED-VALUE>
+                            <TICKS-PER-BASE>1</TICKS-PER-BASE>
+                            <MIN-CYCLE>1</MIN-CYCLE>
+                            <TYPE>HARDWARE</TYPE>
+                            <UNIT>NANOSECONDS</UNIT>
+                            <SECONDS-PER-TICK>0.000001</SECONDS-PER-TICK>
+                        </OS-COUNTER>
+                    </OS-COUNTERS>
+                    
+                    <!-- OS Alarms -->
+                    <OS-ALARMS>
+                        <OS-ALARM>
+                            <SHORT-NAME>Alarm_10ms</SHORT-NAME>
+                            <COUNTER-REF DEST="OS-COUNTER">/Os/SystemTimer</COUNTER-REF>
+                            <ACTION>
+                                <ACTIVATE-TASK-REF DEST="OS-TASK">/Os/MainTask_10ms</ACTIVATE-TASK-REF>
+                            </ACTION>
+                            <AUTOSTART>
+                                <RELATIVE>
+                                    <ALARM-TIME>10000</ALARM-TIME>
+                                    <CYCLE-TIME>10000</CYCLE-TIME>
+                                </RELATIVE>
+                            </AUTOSTART>
+                        </OS-ALARM>
+                        <OS-ALARM>
+                            <SHORT-NAME>Alarm_100ms</SHORT-NAME>
+                            <COUNTER-REF DEST="OS-COUNTER">/Os/SystemTimer</COUNTER-REF>
+                            <ACTION>
+                                <ACTIVATE-TASK-REF DEST="OS-TASK">/Os/MainTask_100ms</ACTIVATE-TASK-REF>
+                            </ACTION>
+                            <AUTOSTART>
+                                <RELATIVE>
+                                    <ALARM-TIME>100000</ALARM-TIME>
+                                    <CYCLE-TIME>100000</CYCLE-TIME>
+                                </RELATIVE>
+                            </AUTOSTART>
+                        </OS-ALARM>
+                    </OS-ALARMS>
+                    
+                    <!-- OS Resources -->
+                    <OS-RESOURCES>
+                        <OS-RESOURCE>
+                            <SHORT-NAME>RES_SCHEDULER</SHORT-NAME>
+                            <RESOURCE-PROPERTY>STANDARD</RESOURCE-PROPERTY>
+                        </OS-RESOURCE>
+                        <OS-RESOURCE>
+                            <SHORT-NAME>SharedResource</SHORT-NAME>
+                            <RESOURCE-PROPERTY>STANDARD</RESOURCE-PROPERTY>
+                        </OS-RESOURCE>
+                    </OS-RESOURCES>
+                    
+                    <!-- OS ISRs -->
+                    <OS-ISRS>
+                        <OS-ISR>
+                            <SHORT-NAME>SystemTimerISR</SHORT-NAME>
+                            <CATEGORY>2</CATEGORY>
+                            <PRIORITY>20</PRIORITY>
+                            <STACK-SIZE>512</STACK-SIZE>
+                        </OS-ISR>
+                        <OS-ISR>
+                            <SHORT-NAME>CAN_RX_ISR</SHORT-NAME>
+                            <CATEGORY>2</CATEGORY>
+                            <PRIORITY>18</PRIORITY>
+                            <STACK-SIZE>1024</STACK-SIZE>
+                        </OS-ISR>
+                    </OS-ISRS>
+                </OS>
+            </ELEMENTS>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>
