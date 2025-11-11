@@ -1,0 +1,40 @@
+VERSION ""
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: Engine_ECU Transmission_ECU ABS_ECU Body_ECU
+
+BO_ 291 Engine_Data: 4 Engine_ECU
+ SG_ RPM : 0|16@1+ (1,0) [0|0] "" Engine_ECU
+ SG_ Throttle : 16|8@1+ (1,0) [0|0] "" Engine_ECU
+
+BO_ 1110 Transmission_Status: 8 Engine_ECU
+ SG_ Gear : 0|4@1+ (1,0) [0|0] "" Engine_ECU
+
+BO_ 1929 ABS_Data: 4 Engine_ECU
+ SG_ WheelSpeed_FL : 0|16@1+ (1,0) [0|0] "" Engine_ECU
+
+BO_ 256 Airbag_Status: 4 Engine_ECU
+
+BO_ 512 Body_Control: 6 Engine_ECU
+
+CM_ BO_ 291 "Engine control data including RPM and throttle position";
+CM_ BO_ 1110 "Transmission status and gear information";
+CM_ BO_ 1929 "ABS system data with wheel speeds";

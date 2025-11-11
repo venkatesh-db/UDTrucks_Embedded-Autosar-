@@ -1,0 +1,57 @@
+{
+  "project_name": "CAN_Protocol_Demo_Tests",
+  "version": "1.0",
+  "created": "2025-11-10T08:40:41.540282",
+  "description": "Test configuration generated from CAN protocol demonstrations",
+  "test_cases": [
+    {
+      "name": "CAN_Arbitration_Test",
+      "description": "Verify CAN arbitration mechanism with simultaneous transmissions",
+      "setup": [
+        "Configure two nodes with different priority messages",
+        "Node A sends ID 0x100 (high priority)",
+        "Node B sends ID 0x700 (low priority)"
+      ],
+      "execution": [
+        "Trigger simultaneous transmission",
+        "Monitor bus for arbitration behavior",
+        "Verify high priority message wins"
+      ],
+      "expected_results": [
+        "Message 0x100 transmitted successfully",
+        "Message 0x700 deferred and retransmitted",
+        "No arbitration errors detected"
+      ]
+    },
+    {
+      "name": "CAN_Error_Handling_Test",
+      "description": "Verify CAN error detection and recovery mechanisms",
+      "setup": [
+        "Configure normal CAN communication",
+        "Prepare error injection capabilities"
+      ],
+      "execution": [
+        "Inject bit errors during transmission",
+        "Monitor error counters (TEC/REC)",
+        "Verify error frame generation",
+        "Test error recovery behavior"
+      ],
+      "expected_results": [
+        "Bit errors detected and flagged",
+        "Error frames generated correctly",
+        "Automatic retransmission occurs",
+        "Error counters increment appropriately"
+      ]
+    }
+  ],
+  "network_configuration": {
+    "baudrate": 500000,
+    "sample_point": 0.875,
+    "sjw": 1,
+    "protocols": [
+      "CAN",
+      "LIN",
+      "FlexRay"
+    ]
+  }
+}
